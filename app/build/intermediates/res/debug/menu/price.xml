@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="zaofond.accounts.PriceActivity" >
+    <item android:id="@+id/action_like"
+        android:title="@string/strLike"
+        android:icon="@drawable/ic_like"
+        android:showAsAction="withText|ifRoom" />
+    <item android:id="@+id/action_unlike"
+        android:title="@string/strUnlike"
+        android:icon="@drawable/ic_unlike"
+        android:showAsAction="withText|ifRoom" />
+</menu>
+<!-- From: file:/home/rinat/workspace/Accounts/app/src/main/res/menu/price.xml -->
