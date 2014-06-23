@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -78,6 +79,7 @@ public class PlaceholderFragment_1 extends Fragment {
         lvFR1 = (ListView)rootView.findViewById(R.id.lvFR1);
         lvFR1.setAdapter(adapterFR1);
         lvFR1.setClickable(true);
+        lvFR1.setTextFilterEnabled(true);
         lvFR1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -87,6 +89,8 @@ public class PlaceholderFragment_1 extends Fragment {
                 //Toast.makeText(getActivity(),Integer.toString(position),Toast.LENGTH_SHORT).show();
             }
         });
+
+        adapterFR1.getFilter().filter("0");
 
 
         /*final String[] outPut = {null};
@@ -217,8 +221,16 @@ public class PlaceholderFragment_1 extends Fragment {
 
     private class AccountAdapter extends ArrayAdapter<Account> {
 
+        private ArrayList<Account> originalList;
+        private ArrayList<Account> accountList;
+        private AccountFilter filter;
+
         public AccountAdapter(Context context) {
             super(context, R.layout.account_listitem, Account.accounts);
+            this.accountList = new ArrayList<Account>();
+            this.accountList.addAll(Account.accounts);
+            this.originalList = new ArrayList<Account>();
+            this.originalList.addAll(Account.accounts);
         }
 
         @Override
@@ -240,6 +252,62 @@ public class PlaceholderFragment_1 extends Fragment {
                     .setText(account.COL_PRICE + " р.");
             return convertView;
         }
+
+        @Override
+        public Filter getFilter() {
+            if (filter == null){
+                filter  = new AccountFilter();
+            }
+            return filter;
+        }
+
+        private class AccountFilter extends Filter
+        {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                constraint = constraint.toString().toLowerCase();
+                FilterResults result = new FilterResults();
+                if(constraint != null && constraint.toString().length() > 0)
+                {
+                    ArrayList<Account> filteredItems = new ArrayList<Account>();
+
+                    for(int i = 0, l = originalList.size(); i < l; i++)
+                    {
+                        Account account = originalList.get(i);
+                        if(account.COL_STATUS == constraint)
+                            filteredItems.add(account);
+                    }
+                    result.count = filteredItems.size();
+                    result.values = filteredItems;
+                }
+                else
+                {
+                    synchronized(this)
+                    {
+                        result.values = originalList;
+                        result.count = originalList.size();
+                    }
+                }
+                return result;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+
+                accountList = (ArrayList<Account>)results.values;
+                notifyDataSetChanged();
+                clear();
+                for(int i = 0, l = accountList.size(); i < l; i++)
+                    add(accountList.get(i));
+                notifyDataSetInvalidated();
+            }
+        }
     }
+
+
 
 }

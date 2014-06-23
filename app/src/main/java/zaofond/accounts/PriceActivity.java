@@ -1,11 +1,19 @@
 package zaofond.accounts;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class PriceActivity extends FragmentActivity {
 
@@ -24,6 +32,13 @@ public class PriceActivity extends FragmentActivity {
         tvAuthor.setText(Account.accounts.get(position).COL_AUTHOR);
         tvKontr.setText(Account.accounts.get(position).COL_KONTR);
         tvPrice.setText(Account.accounts.get(position).COL_PRICE);
+
+        File imgFile = new File(Environment.getExternalStorageDirectory().toString()+File.separator+"test.jpg");
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            ZoomableImageView myImage = (ZoomableImageView) findViewById(R.id.ivTest);
+            myImage.setImageBitmap(myBitmap);
+        }
     }
 
 

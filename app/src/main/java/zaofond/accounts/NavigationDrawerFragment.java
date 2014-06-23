@@ -249,13 +249,13 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
+        /*if (item.getItemId() == R.id.action_refreshdata) {
             //Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             //Account.accounts.add(new Account("12","2","3","4","5","6"));
             //PlaceholderFragment_1.lvFR1.deferNotifyDataSetChanged();
             //((ListView)getActivity().findViewById(R.id.lvFR1)).notify();
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

@@ -105,7 +105,7 @@ public class MainActivity extends Activity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_example) {
+        if (id == R.id.action_refreshdata) {
             //Добавляем новую строку и уведомляем об этом адаптер
             Account.accounts.add(new Account("12","2","3","4","5","6"));
 
