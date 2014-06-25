@@ -30,7 +30,10 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +57,9 @@ public class PlaceholderFragment_1 extends Fragment {
      * number.
      */
 
-    private static Map<String,String> connect = new HashMap<String, String>();
     public static ArrayAdapter adapterFR1;
     public static ListView lvFR1;
+    private ArrayList<Account> copyAccounts;
 
     public static PlaceholderFragment_1 newInstance(int sectionNumber) {
         PlaceholderFragment_1 fragment = new PlaceholderFragment_1();
@@ -74,6 +77,9 @@ public class PlaceholderFragment_1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_1, container, false);
 
+        copyAccounts = new ArrayList<Account>();
+        copyAccounts.addAll(Account.accounts);
+
         adapterFR1 = new AccountAdapter(getActivity());
 
         lvFR1 = (ListView)rootView.findViewById(R.id.lvFR1);
@@ -82,11 +88,13 @@ public class PlaceholderFragment_1 extends Fragment {
         lvFR1.setTextFilterEnabled(true);
         lvFR1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PriceActivity.class);
-                intent.putExtra("position", position);
+                intent.putExtra("ID", view.getId());
                 startActivity(intent);
+                //int ID = view.getId();
                 //Toast.makeText(getActivity(),Integer.toString(position),Toast.LENGTH_SHORT).show();
+                //Log.d("My", "itemClick: position = " + position + ", ID = " + ID);
             }
         });
 
@@ -221,16 +229,19 @@ public class PlaceholderFragment_1 extends Fragment {
 
     private class AccountAdapter extends ArrayAdapter<Account> {
 
-        private ArrayList<Account> originalList;
+        //private ArrayList<Account> originalList;
         private ArrayList<Account> accountList;
         private AccountFilter filter;
 
         public AccountAdapter(Context context) {
-            super(context, R.layout.account_listitem, Account.accounts);
+            super(context, R.layout.account_listitem_1, copyAccounts);
             this.accountList = new ArrayList<Account>();
-            this.accountList.addAll(Account.accounts);
-            this.originalList = new ArrayList<Account>();
-            this.originalList.addAll(Account.accounts);
+            //this.accountList.add(new Account("1", "Пензин Антон","Компания Мастер","1200","","0"));
+            //System.arraycopy(Account.accounts,0,this.accountList,0,5);
+            //Account.accounts.toArray().clone();
+            this.accountList.addAll(copyAccounts);
+            //this.originalList = new ArrayList<Account>();
+            //this.originalList.addAll(copyAccounts);
         }
 
         @Override
@@ -244,12 +255,14 @@ public class PlaceholderFragment_1 extends Fragment {
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext())
-                        .inflate(R.layout.account_listitem, null);
+                        .inflate(R.layout.account_listitem_1, null);
             }
             ((TextView) convertView.findViewById(R.id.cardFIO))
                     .setText(account.COL_AUTHOR);
             ((TextView) convertView.findViewById(R.id.cardPrice))
                     .setText(account.COL_PRICE + " р.");
+
+            convertView.setId(Integer.valueOf(account.COL_ID));
             return convertView;
         }
 
@@ -273,9 +286,9 @@ public class PlaceholderFragment_1 extends Fragment {
                 {
                     ArrayList<Account> filteredItems = new ArrayList<Account>();
 
-                    for(int i = 0, l = originalList.size(); i < l; i++)
+                    for(int i = 0, l = Account.accounts.size(); i < l; i++)
                     {
-                        Account account = originalList.get(i);
+                        Account account = Account.accounts.get(i);
                         if(account.COL_STATUS == constraint)
                             filteredItems.add(account);
                     }
@@ -286,8 +299,8 @@ public class PlaceholderFragment_1 extends Fragment {
                 {
                     synchronized(this)
                     {
-                        result.values = originalList;
-                        result.count = originalList.size();
+                        result.values = Account.accounts;
+                        result.count = Account.accounts.size();
                     }
                 }
                 return result;

@@ -1,5 +1,6 @@
 package zaofond.accounts;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,21 +18,23 @@ import java.io.File;
 
 public class PriceActivity extends FragmentActivity {
 
-    private int position = 0;
+    private int ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price);
-        position = (Integer) getIntent().getExtras().get("position");
+        ID = (Integer) getIntent().getExtras().get("ID");
+
+        Account curAccount = Account.getAccountByID(ID);
 
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         TextView tvKontr = (TextView) findViewById(R.id.tvKontr);
         TextView tvPrice = (TextView) findViewById(R.id.tvPrice);
 
-        tvAuthor.setText(Account.accounts.get(position).COL_AUTHOR);
-        tvKontr.setText(Account.accounts.get(position).COL_KONTR);
-        tvPrice.setText(Account.accounts.get(position).COL_PRICE);
+        tvAuthor.setText(curAccount.COL_AUTHOR);
+        tvKontr.setText(curAccount.COL_KONTR);
+        tvPrice.setText(curAccount.COL_PRICE);
 
         File imgFile = new File(Environment.getExternalStorageDirectory().toString()+File.separator+"test.jpg");
         if(imgFile.exists()){
@@ -56,16 +59,31 @@ public class PriceActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_like) {
-            Account acc;
+            /*Account acc;
             acc = Account.accounts.get(position);
-            acc.likeAccount();
+            acc.likeAccount();*/
+
+            DialogSign dSign = new DialogSign();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.title_dialog_like));
+            args.putInt("hint", R.string.to_work);
+            args.putInt("ID",ID);
+            args.putString("status", "like");
+            dSign.setArguments(args);
+            dSign.show(getFragmentManager(), "dSign");
+
             return true;
         }
 
         if (id == R.id.action_unlike) {
-            Account acc;
-            acc = Account.accounts.get(position);
-            acc.unlikeAccount();
+            DialogSign dSign = new DialogSign();
+            Bundle args = new Bundle();
+            args.putString("title", getString(R.string.title_dialog_unlike));
+            args.putInt("hint",R.string.come_in);
+            args.putInt("ID",ID);
+            args.putString("status", "unlike");
+            dSign.setArguments(args);
+            dSign.show(getFragmentManager(), "dSign");
             return true;
         }
 

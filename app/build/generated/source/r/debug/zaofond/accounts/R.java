@@ -21,37 +21,43 @@ public final class R {
     public static final class drawable {
         public static final int drawer_shadow=0x7f020000;
         public static final int ic_drawer=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int ic_like=0x7f020003;
-        public static final int ic_refresh=0x7f020004;
-        public static final int ic_unlike=0x7f020005;
-        public static final int rounded_corners_white=0x7f020006;
+        public static final int ic_item_like=0x7f020002;
+        public static final int ic_item_unlike=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int ic_like=0x7f020005;
+        public static final int ic_refresh=0x7f020006;
+        public static final int ic_unlike=0x7f020007;
+        public static final int rounded_corners_white=0x7f020008;
     }
     public static final class id {
-        public static final int action_like=0x7f09000e;
-        public static final int action_refreshdata=0x7f09000d;
-        public static final int action_settings=0x7f09000c;
-        public static final int action_unlike=0x7f09000f;
-        public static final int button=0x7f09000b;
+        public static final int action_like=0x7f090010;
+        public static final int action_refreshdata=0x7f09000f;
+        public static final int action_settings=0x7f09000e;
+        public static final int action_unlike=0x7f090011;
+        public static final int cardComment=0x7f090003;
         public static final int cardFIO=0x7f090000;
         public static final int cardPrice=0x7f090001;
-        public static final int container=0x7f090003;
-        public static final int drawer_layout=0x7f090002;
-        public static final int ivTest=0x7f090008;
-        public static final int lvFR1=0x7f090009;
-        public static final int navigation_drawer=0x7f090004;
-        public static final int section_label=0x7f09000a;
-        public static final int tvAuthor=0x7f090005;
-        public static final int tvKontr=0x7f090006;
-        public static final int tvPrice=0x7f090007;
+        public static final int cardStatus=0x7f090002;
+        public static final int container=0x7f090005;
+        public static final int drawer_layout=0x7f090004;
+        public static final int etDialog=0x7f09000b;
+        public static final int ivTest=0x7f09000a;
+        public static final int lvFR1=0x7f09000c;
+        public static final int lvFR2=0x7f09000d;
+        public static final int navigation_drawer=0x7f090006;
+        public static final int tvAuthor=0x7f090007;
+        public static final int tvKontr=0x7f090008;
+        public static final int tvPrice=0x7f090009;
     }
     public static final class layout {
-        public static final int account_listitem=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_price=0x7f030002;
-        public static final int fragment_main_1=0x7f030003;
-        public static final int fragment_main_2=0x7f030004;
-        public static final int fragment_navigation_drawer=0x7f030005;
+        public static final int account_listitem_1=0x7f030000;
+        public static final int account_listitem_2=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_price=0x7f030003;
+        public static final int dialog_sign=0x7f030004;
+        public static final int fragment_main_1=0x7f030005;
+        public static final int fragment_main_2=0x7f030006;
+        public static final int fragment_navigation_drawer=0x7f030007;
     }
     public static final class menu {
         public static final int global=0x7f080000;
@@ -62,14 +68,19 @@ public final class R {
         public static final int action_refreshdata=0x7f060000;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060002;
-        public static final int hello_world=0x7f060003;
-        public static final int navigation_drawer_close=0x7f060004;
-        public static final int navigation_drawer_open=0x7f060005;
-        public static final int strLike=0x7f060006;
-        public static final int strUnlike=0x7f060007;
-        public static final int title_activity_price=0x7f060008;
-        public static final int title_section1=0x7f060009;
-        public static final int title_section2=0x7f06000a;
+        public static final int come_in=0x7f060003;
+        public static final int dialog_comment=0x7f060004;
+        public static final int hello_world=0x7f060005;
+        public static final int navigation_drawer_close=0x7f060006;
+        public static final int navigation_drawer_open=0x7f060007;
+        public static final int strLike=0x7f060008;
+        public static final int strUnlike=0x7f060009;
+        public static final int title_activity_price=0x7f06000a;
+        public static final int title_dialog_like=0x7f06000b;
+        public static final int title_dialog_unlike=0x7f06000c;
+        public static final int title_section1=0x7f06000d;
+        public static final int title_section2=0x7f06000e;
+        public static final int to_work=0x7f06000f;
     }
     public static final class style {
         /**  Customize your theme here. 

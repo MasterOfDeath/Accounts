@@ -12,5 +12,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="strLike">Подписать</string>
     <string name="strUnlike">Отклонить</string>
+    <string name="dialog_comment">Ваш комментарий:</string>
+    <string name="title_dialog_like">Подписать счёт</string>
+    <string name="title_dialog_unlike">Отклонить счёт</string>
+    <string name="to_work">В работу</string>
+    <string name="come_in">Зайдите</string>
 
 </resources>

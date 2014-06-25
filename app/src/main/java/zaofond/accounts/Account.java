@@ -1,5 +1,7 @@
 package zaofond.accounts;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,10 @@ public class Account {
         accounts.add(new Account("3", "Пензин Антон","Арсенал+","12600","","0"));
         accounts.add(new Account("4", "Меркин М.А.","ОАО СтальМостСтрой","400","","0"));
         accounts.add(new Account("5", "Овчаренко С.В.","Компания Север","42150","","0"));
-        accounts.add(new Account("6", "Гумиров Р.И.","Компания Мега","2650","","1"));
-        accounts.add(new Account("7", "Ершов А.Ю.","ООО СерерРыбХоз","120000","","1"));
-        accounts.add(new Account("8", "Меркин М.А.","ЗАО СибНефтеМаш","20000","","2"));
-        accounts.add(new Account("9", "Пензин Антон","Компания Мастер","1200","","1"));
+        accounts.add(new Account("6", "Гумиров Р.И.","Компания Мега","2650","В работу","1"));
+        accounts.add(new Account("7", "Ершов А.Ю.","ООО СерерРыбХоз","120000","В работу","1"));
+        accounts.add(new Account("8", "Меркин М.А.","ЗАО СибНефтеМаш","20000","Зайдите","2"));
+        accounts.add(new Account("9", "Пензин Антон","Компания Мастер","1200","В работу","1"));
     }
 
     public String COL_ID;
@@ -39,19 +41,28 @@ public class Account {
         this.COL_STATUS = COL_STATUS;
     }
 
-    public void likeAccount(){
+    public void likeAccount(String comment){
+        this.COL_COMM = comment;
         this.COL_STATUS = "1";
     }
 
-    public void unlikeAccount(){
+    public void unlikeAccount(String comment){
+        this.COL_COMM = comment;
         this.COL_STATUS = "2";
     }
 
-    public void setComment(String comment){
-        this.COL_COMM = comment;
+    public static Account getAccountByID(int ID){
+        String sID = Integer.toString(ID);
+        Account sAccount = null;
+
+        for (Account account : accounts) {
+            if (account.COL_ID.equals(sID)) {
+                sAccount = account;
+                break;
+            }
+        }
+
+        return sAccount;
     }
 
-    public List<Account> getNotSignAccounts(){
-        return null;
-    }
 }
