@@ -39,10 +39,12 @@ public class DialogSign extends DialogFragment {
                         if (status == "like") {
                             if (comment.isEmpty()) comment = getString(R.string.to_work);
                             acc.likeAccount(comment);
+                            PriceActivity.h.sendEmptyMessage(1);
                         }
                         if (status == "unlike") {
                             if (comment.isEmpty()) comment = getString(R.string.come_in);
                             acc.unlikeAccount(comment);
+                            PriceActivity.h.sendEmptyMessage(2);
                         }
                     }
                 })

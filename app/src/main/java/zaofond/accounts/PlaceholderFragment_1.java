@@ -57,9 +57,7 @@ public class PlaceholderFragment_1 extends Fragment {
      * number.
      */
 
-    public static ArrayAdapter adapterFR1;
     public static ListView lvFR1;
-    private ArrayList<Account> copyAccounts;
 
     public static PlaceholderFragment_1 newInstance(int sectionNumber) {
         PlaceholderFragment_1 fragment = new PlaceholderFragment_1();
@@ -73,17 +71,17 @@ public class PlaceholderFragment_1 extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_1, container, false);
 
-        copyAccounts = new ArrayList<Account>();
-        copyAccounts.addAll(Account.accounts);
+        MainActivity.curFragmentPosition = 0;
 
-        adapterFR1 = new AccountAdapter(getActivity());
+        MainActivity.filteredAccountsFR1 = Account.filterAccountFR1(Account.accounts,"0");
+        MainActivity.refreshAdapter(MainActivity.adapterFR1,MainActivity.filteredAccountsFR1);
 
         lvFR1 = (ListView)rootView.findViewById(R.id.lvFR1);
-        lvFR1.setAdapter(adapterFR1);
+        lvFR1.setAdapter(MainActivity.adapterFR1);
         lvFR1.setClickable(true);
         lvFR1.setTextFilterEnabled(true);
         lvFR1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,14 +89,11 @@ public class PlaceholderFragment_1 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PriceActivity.class);
                 intent.putExtra("ID", view.getId());
+                intent.putExtra("showButtons",true);
                 startActivity(intent);
-                //int ID = view.getId();
-                //Toast.makeText(getActivity(),Integer.toString(position),Toast.LENGTH_SHORT).show();
                 //Log.d("My", "itemClick: position = " + position + ", ID = " + ID);
             }
         });
-
-        adapterFR1.getFilter().filter("0");
 
 
         /*final String[] outPut = {null};
@@ -139,7 +134,6 @@ public class PlaceholderFragment_1 extends Fragment {
                 }
             }
         });*/
-
 
         return rootView;
     }
@@ -227,99 +221,7 @@ public class PlaceholderFragment_1 extends Fragment {
         return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
-    private class AccountAdapter extends ArrayAdapter<Account> {
 
-        //private ArrayList<Account> originalList;
-        private ArrayList<Account> accountList;
-        private AccountFilter filter;
-
-        public AccountAdapter(Context context) {
-            super(context, R.layout.account_listitem_1, copyAccounts);
-            this.accountList = new ArrayList<Account>();
-            //this.accountList.add(new Account("1", "Пензин Антон","Компания Мастер","1200","","0"));
-            //System.arraycopy(Account.accounts,0,this.accountList,0,5);
-            //Account.accounts.toArray().clone();
-            this.accountList.addAll(copyAccounts);
-            //this.originalList = new ArrayList<Account>();
-            //this.originalList.addAll(copyAccounts);
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Account account = getItem(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext())
-                        .inflate(R.layout.account_listitem_1, null);
-            }
-            ((TextView) convertView.findViewById(R.id.cardFIO))
-                    .setText(account.COL_AUTHOR);
-            ((TextView) convertView.findViewById(R.id.cardPrice))
-                    .setText(account.COL_PRICE + " р.");
-
-            convertView.setId(Integer.valueOf(account.COL_ID));
-            return convertView;
-        }
-
-        @Override
-        public Filter getFilter() {
-            if (filter == null){
-                filter  = new AccountFilter();
-            }
-            return filter;
-        }
-
-        private class AccountFilter extends Filter
-        {
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-
-                constraint = constraint.toString().toLowerCase();
-                FilterResults result = new FilterResults();
-                if(constraint != null && constraint.toString().length() > 0)
-                {
-                    ArrayList<Account> filteredItems = new ArrayList<Account>();
-
-                    for(int i = 0, l = Account.accounts.size(); i < l; i++)
-                    {
-                        Account account = Account.accounts.get(i);
-                        if(account.COL_STATUS == constraint)
-                            filteredItems.add(account);
-                    }
-                    result.count = filteredItems.size();
-                    result.values = filteredItems;
-                }
-                else
-                {
-                    synchronized(this)
-                    {
-                        result.values = Account.accounts;
-                        result.count = Account.accounts.size();
-                    }
-                }
-                return result;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint,
-                                          FilterResults results) {
-
-                accountList = (ArrayList<Account>)results.values;
-                notifyDataSetChanged();
-                clear();
-                for(int i = 0, l = accountList.size(); i < l; i++)
-                    add(accountList.get(i));
-                notifyDataSetInvalidated();
-            }
-        }
-    }
 
 
 

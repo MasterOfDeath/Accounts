@@ -1,24 +1,25 @@
 package zaofond.accounts;
 
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.File;
 
-public class PriceActivity extends FragmentActivity {
+public class PriceActivity extends FragmentActivity{
 
-    private int ID = 0;
+    private static int ID = 0;
+    private TextView tvAuthor;
+    private TextView tvKontr;
+    private TextView tvPrice;
+    public static Account curAccount;
+    public static Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +27,13 @@ public class PriceActivity extends FragmentActivity {
         setContentView(R.layout.activity_price);
         ID = (Integer) getIntent().getExtras().get("ID");
 
-        Account curAccount = Account.getAccountByID(ID);
+        curAccount = Account.getAccountByID(ID);
 
-        TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
-        TextView tvKontr = (TextView) findViewById(R.id.tvKontr);
-        TextView tvPrice = (TextView) findViewById(R.id.tvPrice);
+        tvAuthor = (TextView) findViewById(R.id.tvAuthor);
+        tvKontr = (TextView) findViewById(R.id.tvKontr);
+        tvPrice = (TextView) findViewById(R.id.tvPrice);
 
-        tvAuthor.setText(curAccount.COL_AUTHOR);
-        tvKontr.setText(curAccount.COL_KONTR);
-        tvPrice.setText(curAccount.COL_PRICE);
+        refreshUI(curAccount);
 
         File imgFile = new File(Environment.getExternalStorageDirectory().toString()+File.separator+"test.jpg");
         if(imgFile.exists()){
@@ -42,13 +41,24 @@ public class PriceActivity extends FragmentActivity {
             ZoomableImageView myImage = (ZoomableImageView) findViewById(R.id.ivTest);
             myImage.setImageBitmap(myBitmap);
         }
-    }
 
+        h = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                if (msg.what == 1) nextAccountToUI();
+                if (msg.what == 2) nextAccountToUI();
+            };
+        };
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.price, menu);
+
+        boolean showButtons = (Boolean) getIntent().getExtras().get("showButtons");
+        showStatusButtons(menu,showButtons);
+
         return true;
     }
 
@@ -84,9 +94,43 @@ public class PriceActivity extends FragmentActivity {
             args.putString("status", "unlike");
             dSign.setArguments(args);
             dSign.show(getFragmentManager(), "dSign");
+
+            /*Account acc;
+            acc = Account.nextAccount(ID,MainActivity.filteredAccountsFR1);
+            Log.d("111111","След. "+acc.COL_AUTHOR+"ID "+ID);*/
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static void showStatusButtons(Menu menu, boolean show){
+        menu.findItem(R.id.action_like).setVisible(show);
+        menu.findItem(R.id.action_unlike).setVisible(show);
+    }
+
+    private void refreshUI(Account account){
+        tvAuthor.setText(account.COL_AUTHOR);
+        tvKontr.setText(account.COL_KONTR);
+        tvPrice.setText(account.COL_PRICE);
+    }
+
+    public void nextAccountToUI(){
+        curAccount = Account.nextAccount(ID,MainActivity.filteredAccountsFR1);
+        if (curAccount != null){
+            MainActivity.filteredAccountsFR1 = Account.filterAccountFR1(Account.accounts,"0");
+            ID = Integer.valueOf(curAccount.COL_ID);
+
+            MainActivity.refreshAdapter(MainActivity.adapterFR1,MainActivity.filteredAccountsFR1);
+
+            refreshUI(curAccount);
+        }
+        else {
+            MainActivity.filteredAccountsFR1 = Account.filterAccountFR1(Account.accounts,"0");
+            MainActivity.refreshAdapter(MainActivity.adapterFR1, MainActivity.filteredAccountsFR1);
+            finish();
+        }
+    }
+
 }

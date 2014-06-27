@@ -1,7 +1,5 @@
 package zaofond.accounts;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,4 +63,53 @@ public class Account {
         return sAccount;
     }
 
+    public static ArrayList<Account> filterAccountFR1(List<Account> origAccounts, String filter){
+        ArrayList<Account> result = new ArrayList<Account>();
+        result.clear();
+
+        for (Account account : origAccounts) {
+            if (account.COL_STATUS.equals(filter)){
+                result.add(account);
+            }
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Account> filterAccountFR2(List<Account> origAccounts, String filter){
+        ArrayList<Account> result = new ArrayList<Account>();
+        result.clear();
+
+        for (Account account : origAccounts) {
+            if (!account.COL_STATUS.equals(filter)){
+                result.add(account);
+            }
+        }
+
+        return result;
+    }
+
+    public static Account nextAccount(int ID, List<Account> origAccounts){
+        if (origAccounts.size() == 1) return null;
+        Account result = null;
+        String sID = Integer.toString(ID);
+        int j = -1;
+
+        for (int i = 0; i < origAccounts.size(); i++) {
+            if (origAccounts.get(i).COL_ID.equals(sID)) {
+                j=i;
+                break;
+            }
+        }
+
+        if (j == -1) return null;
+
+        if (j+1 != origAccounts.size()) {j++;}
+        else
+        {if (j+1 == origAccounts.size()) {j--;}}
+
+        result = origAccounts.get(j);
+
+        return result;
+    }
 }
